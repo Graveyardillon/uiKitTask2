@@ -47,5 +47,10 @@ class Drawer: UIView, UITextFieldDelegate {
     
     myTextField.delegate = self
     
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    self.addSubview(myTextField)
+    
+    myTextField.isEnabled = true
   }
 }
