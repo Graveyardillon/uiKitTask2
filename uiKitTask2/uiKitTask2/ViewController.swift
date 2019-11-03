@@ -11,6 +11,8 @@ import CoreData
 import Foundation
 
 class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
+  
+  let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
   @IBOutlet weak var scrollArea: UIScrollView!
   @IBOutlet weak var botRect: UIView!
@@ -57,6 +59,11 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
       )
     )
     scrollArea.tag = 88
+    
+    let tap = UITapGestureRecognizer(target: self, action: "svTapped:")
+    tap.numberOfTouchesRequired = 1
+    scrollArea.addGestureRecognizer(tap)
+    
     scrollArea.delegate = self
     self.view.sendSubviewToBack(scrollArea)
     
@@ -111,6 +118,29 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     print(scrollView.contentOffset)
+  }
+  
+  override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+  }
+  
+  @objc func svTapped(_ touch: UIGestureRecognizer) {
+    let touchPoint = touch.location(in: self.view)
+    
+    let drawer = Drawer(
+      frame: CGRect(
+        origin: CGPoint(
+          x: touchPoint.x,
+          y: touchPoint.y
+        ),
+        size: CGSize(
+          width: 200,
+          height: 100
+        )
+      )
+    )
+    
+    self.view.addSubview(drawer)
   }
 }
 
