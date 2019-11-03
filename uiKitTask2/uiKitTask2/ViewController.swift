@@ -142,5 +142,16 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
     
     self.view.addSubview(drawer)
   }
+  
+  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    let touch = touches.first!
+    tapPoint = touch.location(in: self.view)
+    
+    let view = touch.view!
+    
+    if view.tag != 100 && view.tag != 101 && view.tag != 102 && touch.tapCount == 2 {
+      view.removeFromSuperview()
+    }
+  }
 }
 
