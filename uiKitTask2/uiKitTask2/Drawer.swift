@@ -53,4 +53,8 @@ class Drawer: UIView, UITextFieldDelegate {
     
     myTextField.isEnabled = true
   }
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+  }
 }

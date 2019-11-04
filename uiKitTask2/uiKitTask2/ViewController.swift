@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import Foundation
 
-class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
+class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate {
   
   let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
@@ -43,6 +43,17 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
       bottomPadding = self.view.safeAreaInsets.bottom
     }
     
+    self.view.frame = CGRect(
+      origin: CGPoint(
+        x: 0,
+        y: 0
+      ),
+      size: CGSize(
+        width: screenSize.width * 2,
+        height: screenSize.height
+      )
+    )
+    
     scrollArea.contentSize = CGSize(
       width: screenSize.width * 2,
       height: screenSize.height - topPadding - goalHeight - bottomPadding
@@ -60,7 +71,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
     )
     scrollArea.tag = 88
     
-    let tap = UITapGestureRecognizer(target: self, action: "svTapped:")
+    let tap = UITapGestureRecognizer(target: self, action: Selector(("svTapped:")))
     tap.numberOfTouchesRequired = 1
     scrollArea.addGestureRecognizer(tap)
     
@@ -143,6 +154,19 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
     self.view.addSubview(drawer)
   }
   
+  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    let touch = touches.first!
+    let view = touch.view!
+    
+    if view.tag != 99 && view.tag != 100 && view.tag != 101 && view.tag != 102 {
+      let prevState = touch.previousLocation(in: self.view)
+      let nextState = touch.location(in: self.view)
+      
+      view.frame.origin.x += (nextState.x - prevState.x)
+      view.frame.origin.y += (nextState.y - prevState.y)
+    }
+  }
+  
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     let touch = touches.first!
     tapPoint = touch.location(in: self.view)
@@ -152,6 +176,10 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
     if view.tag != 100 && view.tag != 101 && view.tag != 102 && touch.tapCount == 2 {
       view.removeFromSuperview()
     }
+  }
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
   }
 }
 
