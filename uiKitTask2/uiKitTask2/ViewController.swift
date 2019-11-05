@@ -159,9 +159,9 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
             height: 100
           )
         )
-        drawer.tag = tagIndex
+        drawer.tag = Int(i.index)
         
-        tagIndex = tagIndex + 1
+        tagIndex = Int(i.index)
         
         transparentView.addSubview(drawer)
         transparentView.bringSubviewToFront(drawer)
@@ -200,7 +200,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
         )
       )
     )
-    drawer.tag = tagIndex
+    drawer.tag = tagIndex + 1
     
     transparentView.addSubview(drawer)
     
@@ -229,12 +229,13 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
       
       do {
         let fetchRequest: NSFetchRequest<Tags> = Tags.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "index = " + String(view.tag))
         let tags = try context.fetch(fetchRequest)
         
         print(view.tag)
         
-        tags[view.tag].x += (Double(nextState.x) - Double(prevState.x))
-        tags[view.tag].y += (Double(nextState.y) - Double(prevState.y))
+        tags[0].x += (Double(nextState.x) - Double(prevState.x))
+        tags[0].y += (Double(nextState.y) - Double(prevState.y))
         
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
         
@@ -254,6 +255,18 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
       view.removeFromSuperview()
       
       // dbから指定のviewを削除する
+      do {
+        let fetchRequest: NSFetchRequest<Tags> = Tags.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "index = " + String(view.tag))
+        let tags = try context.fetch(fetchRequest)
+        context.delete(tags[0])
+        
+        //tags.remove(at: view.tag)
+        
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+      } catch {
+        print("error occurred in deleting drawer.")
+      }
     }
   }
   
