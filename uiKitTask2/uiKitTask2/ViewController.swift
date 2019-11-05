@@ -32,6 +32,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
   var tapPoint: CGPoint = CGPoint(x: 0, y: 0)
   
   var scrollBeginningPoint: CGPoint!
+  
+  let applicationWidth: CGFloat = UIScreen.main.bounds.width * 5
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -53,7 +55,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
         y: 0
       ),
       size: CGSize(
-        width: screenSize.width * 2,
+        width: applicationWidth,
         height: screenSize.height
       )
     )
@@ -64,14 +66,14 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
         y: topPadding + goalHeight
       ),
       size: CGSize(
-        width: screenSize.width * 2,
+        width: applicationWidth,
         height: screenSize.height - topPadding - goalHeight - bottomPadding
       )
     )
     self.view.addSubview(transparentView)
     
     scrollArea.contentSize = CGSize(
-      width: screenSize.width * 2,
+      width: applicationWidth,
       height: screenSize.height - topPadding - goalHeight - bottomPadding
     )
     
@@ -112,7 +114,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
         y: 0
       ),
       size: CGSize(
-        width: screenSize.width * 2,
+        width: applicationWidth,
         height: (screenSize.height - topPadding - bottomPadding - goalHeight) / 3
       )
     )
@@ -124,7 +126,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
         y: (screenSize.height - topPadding - bottomPadding - goalHeight) / 3
       ),
       size: CGSize(
-        width: screenSize.width * 2,
+        width: applicationWidth,
         height: (screenSize.height - topPadding - bottomPadding - goalHeight) / 3
       )
     )
@@ -136,7 +138,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
         y: (screenSize.height - topPadding - bottomPadding - goalHeight) / 3 * 2
       ),
       size: CGSize(
-        width: screenSize.width * 2,
+        width: applicationWidth,
         height: (screenSize.height - topPadding - bottomPadding - goalHeight) / 3
       )
     )
@@ -148,8 +150,6 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    print(scrollView.contentOffset)
-    
     let currentPoint = scrollView.contentOffset
     
     transparentView.frame.origin.x = -currentPoint.x
