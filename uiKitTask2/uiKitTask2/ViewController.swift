@@ -40,6 +40,18 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
     super.viewDidLoad()
     
     titleField.delegate = self
+    
+    do {
+      let fetchRequest: NSFetchRequest<Title> = Title.fetchRequest()
+      let title = try context.fetch(fetchRequest)
+      
+      if title.count > 0 {
+        titleField.text = title[0].text
+      }
+    } catch {
+      print("error occurred in loading title.")
+    }
+    
   }
   
   override func viewDidLayoutSubviews() {
@@ -272,6 +284,26 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
+    
+    // タイトル保存
+    do {
+      let fetchRequest: NSFetchRequest<Title> = Title.fetchRequest()
+      let title = try context.fetch(fetchRequest)
+      
+      if title.count == 0 {
+        let text = Title(context: context)
+        
+        text.text = textField.text!
+      } else {
+        title[0].text = textField.text!
+      }
+      
+      (UIApplication.shared.delegate as! AppDelegate).saveContext()
+    } catch {
+      print("update failed.")
+    }
+    
+    return true
   }
 }
 
