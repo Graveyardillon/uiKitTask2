@@ -14,6 +14,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
   
   let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
+  var tagIndex = 0
 
   @IBOutlet weak var transparentView: TransparentView!
   @IBOutlet weak var scrollArea: UIScrollView!
@@ -143,6 +144,30 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
       )
     )
     botRect.tag = 102
+    
+    // coredataからdrawerを読み込む
+    do {
+      let fetchRequest: NSFetchRequest<Tags> = Tags.fetchRequest()
+      let tags = try context.fetch(fetchRequest)
+      
+      for i in tags {
+        let drawer = Drawer(
+          frame: CGRect(
+            x: CGFloat(i.x),
+            y: CGFloat(i.y),
+            width: 200,
+            height: 100
+          )
+        )
+        
+        tagIndex = tagIndex + 1
+        
+        transparentView.addSubview(drawer)
+        transparentView.bringSubviewToFront(drawer)
+      }
+    } catch {
+      print("error occured in loadings.")
+    }
   }
   
   func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -153,15 +178,6 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
     let currentPoint = scrollView.contentOffset
     
     transparentView.frame.origin.x = -currentPoint.x
-//    if(scrollBeginningPoint.x < currentPoint.x) {
-//      print("right")
-//
-//      transparentView.frame.origin.x = transparentView.frame.origin.x - currentPoint.x
-//    } else {
-//      print("left")
-//
-//      transparentView.frame.origin.x = transparentView.frame.origin.x + currentPoint.x
-//    }
   }
   
   override func didReceiveMemoryWarning() {
@@ -185,6 +201,17 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
     )
     
     transparentView.addSubview(drawer)
+    
+    // DBに保存する
+    let tags = Tags(context: context)
+    
+    tags.x = Double(touchPoint.x)
+    tags.y = Double(touchPoint.y)
+    tags.index = Int64(tagIndex+1)
+    
+    tagIndex = tagIndex + 1
+    
+    (UIApplication.shared.delegate as! AppDelegate).saveContext()
   }
   
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
