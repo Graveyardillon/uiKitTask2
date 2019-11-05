@@ -30,6 +30,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
   let screenSize: CGRect = UIScreen.main.bounds
   let goalHeight: CGFloat = 60.0
   var tapPoint: CGPoint = CGPoint(x: 0, y: 0)
+  
+  var scrollBeginningPoint: CGPoint!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -141,8 +143,25 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
     botRect.tag = 102
   }
   
+  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    scrollBeginningPoint = scrollView.contentOffset
+  }
+  
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     print(scrollView.contentOffset)
+    
+    let currentPoint = scrollView.contentOffset
+    
+    transparentView.frame.origin.x = -currentPoint.x
+//    if(scrollBeginningPoint.x < currentPoint.x) {
+//      print("right")
+//
+//      transparentView.frame.origin.x = transparentView.frame.origin.x - currentPoint.x
+//    } else {
+//      print("left")
+//
+//      transparentView.frame.origin.x = transparentView.frame.origin.x + currentPoint.x
+//    }
   }
   
   override func didReceiveMemoryWarning() {
@@ -173,8 +192,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
     let view = touch.view!
     
     if view.tag != 99 && view.tag != 100 && view.tag != 101 && view.tag != 102 {
-      let prevState = touch.previousLocation(in: self.view)
-      let nextState = touch.location(in: self.view)
+      let prevState = touch.previousLocation(in: transparentView)
+      let nextState = touch.location(in: transparentView)
       
       view.frame.origin.x += (nextState.x - prevState.x)
       view.frame.origin.y += (nextState.y - prevState.y)
@@ -183,7 +202,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     let touch = touches.first!
-    tapPoint = touch.location(in: self.view)
+    tapPoint = touch.location(in: transparentView)
     
     let view = touch.view!
     
