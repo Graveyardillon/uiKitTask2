@@ -17,6 +17,7 @@
 		4149DF8A236F4E5C00B00E62 /* uiKitTask2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4149DF89236F4E5C00B00E62 /* uiKitTask2Tests.swift */; };
 		4149DF95236F4E5C00B00E62 /* uiKitTask2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4149DF94236F4E5C00B00E62 /* uiKitTask2UITests.swift */; };
 		4149DFA3236F4EA400B00E62 /* Drawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4149DFA2236F4EA400B00E62 /* Drawer.swift */; };
+		417111E123712E11005C4C66 /* TransparentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417111E023712E11005C4C66 /* TransparentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		4149DF94236F4E5C00B00E62 /* uiKitTask2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = uiKitTask2UITests.swift; sourceTree = "<group>"; };
 		4149DF96236F4E5C00B00E62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4149DFA2236F4EA400B00E62 /* Drawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawer.swift; sourceTree = "<group>"; };
+		417111E023712E11005C4C66 /* TransparentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				4149DF80236F4E5B00B00E62 /* Info.plist */,
 				4149DF78236F4E5700B00E62 /* uiKitTask2.xcdatamodeld */,
 				4149DFA2236F4EA400B00E62 /* Drawer.swift */,
+				417111E023712E11005C4C66 /* TransparentView.swift */,
 			);
 			path = uiKitTask2;
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4149DFA3236F4EA400B00E62 /* Drawer.swift in Sources */,
+				417111E123712E11005C4C66 /* TransparentView.swift in Sources */,
 				4149DF74236F4E5700B00E62 /* ViewController.swift in Sources */,
 				4149DF70236F4E5700B00E62 /* AppDelegate.swift in Sources */,
 				4149DF7A236F4E5700B00E62 /* uiKitTask2.xcdatamodeld in Sources */,

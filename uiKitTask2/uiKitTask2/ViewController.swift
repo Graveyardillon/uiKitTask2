@@ -14,6 +14,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
   
   let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
+
+  @IBOutlet weak var transparentView: TransparentView!
   @IBOutlet weak var scrollArea: UIScrollView!
   @IBOutlet weak var botRect: UIView!
   @IBOutlet weak var topRect: UIView!
@@ -53,6 +55,18 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
         height: screenSize.height
       )
     )
+    
+    transparentView.frame = CGRect(
+      origin: CGPoint(
+        x: 0,
+        y: topPadding + goalHeight
+      ),
+      size: CGSize(
+        width: screenSize.width * 2,
+        height: screenSize.height - topPadding - goalHeight - bottomPadding
+      )
+    )
+    self.view.addSubview(transparentView)
     
     scrollArea.contentSize = CGSize(
       width: screenSize.width * 2,
@@ -136,7 +150,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
   }
   
   @objc func svTapped(_ touch: UIGestureRecognizer) {
-    let touchPoint = touch.location(in: self.view)
+    let touchPoint = touch.location(in: transparentView)
     
     let drawer = Drawer(
       frame: CGRect(
@@ -151,7 +165,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
       )
     )
     
-    self.view.addSubview(drawer)
+    transparentView.addSubview(drawer)
   }
   
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
