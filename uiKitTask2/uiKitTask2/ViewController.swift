@@ -159,6 +159,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
             height: 100
           )
         )
+        drawer.tag = tagIndex
         
         tagIndex = tagIndex + 1
         
@@ -166,7 +167,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
         transparentView.bringSubviewToFront(drawer)
       }
     } catch {
-      print("error occured in loadings.")
+      print("error occurred in loadings.")
     }
   }
   
@@ -199,6 +200,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
         )
       )
     )
+    drawer.tag = tagIndex
     
     transparentView.addSubview(drawer)
     
@@ -224,6 +226,21 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
       
       view.frame.origin.x += (nextState.x - prevState.x)
       view.frame.origin.y += (nextState.y - prevState.y)
+      
+      do {
+        let fetchRequest: NSFetchRequest<Tags> = Tags.fetchRequest()
+        let tags = try context.fetch(fetchRequest)
+        
+        print(view.tag)
+        
+        tags[view.tag].x += (Double(nextState.x) - Double(prevState.x))
+        tags[view.tag].y += (Double(nextState.y) - Double(prevState.y))
+        
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        
+      } catch {
+        print("error occurred in moving drawer.")
+      }
     }
   }
   
@@ -235,6 +252,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegat
     
     if view.tag != 100 && view.tag != 101 && view.tag != 102 && touch.tapCount == 2 {
       view.removeFromSuperview()
+      
+      // dbから指定のviewを削除する
     }
   }
   
