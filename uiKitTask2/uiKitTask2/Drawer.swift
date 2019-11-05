@@ -11,6 +11,8 @@ import UIKit
 import CoreData
 
 class Drawer: UIView, UITextFieldDelegate {
+  let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
   }
@@ -47,7 +49,16 @@ class Drawer: UIView, UITextFieldDelegate {
     
     myTextField.delegate = self
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    // dbから読み込み
+    do {
+      let fetchRequest: NSFetchRequest<Tags> = Tags.fetchRequest()
+      fetchRequest.predicate = NSPredicate(format: "index = " + String(self.tag))
+      let tags = try context.fetch(fetchRequest)
+      
+      myTextField.text = tags[0].text
+    } catch {
+      print("error occurred in loading text field.")
+    }
     
     self.addSubview(myTextField)
     
@@ -56,5 +67,19 @@ class Drawer: UIView, UITextFieldDelegate {
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
+    
+    // DBに保存する
+    do {
+      let fetchRequest: NSFetchRequest<Tags> = Tags.fetchRequest()
+      fetchRequest.predicate = NSPredicate(format: "index = " + String(self.tag))
+      let tags = try context.fetch(fetchRequest)
+      
+      tags[0].text = textField.text!
+      (UIApplication.shared.delegate as! AppDelegate).saveContext()
+    } catch {
+      print("error occurred in saving text.")
+    }
+    
+    return true
   }
 }
